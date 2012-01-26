@@ -45,8 +45,9 @@ import at.fhooe.mcm.smc.wav.WaveRecorder;
 
 import com.google.gson.Gson;
 
+
 public class CreateVoiceSample extends Activity {
-	private static final String TAG = "VoiceAuth";
+	static final String TAG = "VoiceAuth";
 
 	private static final int RECORDING_DURATION = 5000;
 	private static final int UI_REFRESH_TIME = 300;
@@ -133,7 +134,7 @@ public class CreateVoiceSample extends Activity {
 
 	private void calculateMfccs() {
 		setButtonsEnabled(false, false, false, false, false);
-		new MfccTask().execute(outputFile.getAbsolutePath());
+		new MfccTask(this).execute(outputFile.getAbsolutePath());
 	}
 
 	private void cancelRecording() {
@@ -187,10 +188,15 @@ public class CreateVoiceSample extends Activity {
 		}
 	}
 	
-	private class MfccTask extends AsyncTask<String, Object, String> {
+	class MfccTask extends AsyncTask<String, Object, String> {
 
 		private ProgressDialog progressDialog;
+		private final Activity parentActivity;
 		
+		public MfccTask(Activity parentActivity) {
+			this.parentActivity = parentActivity;
+		}
+
 		@Override
 		protected String doInBackground(String... params) {
 			String filename = params[0];
@@ -245,7 +251,7 @@ public class CreateVoiceSample extends Activity {
 			for (int i = 0; i < vectorCount; i++) {
 				pl.add(mfcc[i]);
 			}
-			Log.d(TAG, "Added all MFCC vectors to pointlist");
+			Log.d(CreateVoiceSample.TAG, "Added all MFCC vectors to pointlist");
 			return pl;
 		}
 
@@ -298,7 +304,7 @@ public class CreateVoiceSample extends Activity {
 					}
 				}
 			} catch (IOException e) {
-				Log.e(TAG, "Exception in reading samples", e);
+				Log.e(CreateVoiceSample.TAG, "Exception in reading samples", e);
 			}
 			return samples;
 		}
@@ -312,7 +318,7 @@ public class CreateVoiceSample extends Activity {
 		
 		@Override
 		protected void onPreExecute() {
-			progressDialog = new ProgressDialog(CreateVoiceSample.this);
+			progressDialog = new ProgressDialog(parentActivity);
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			progressDialog.setTitle("Working...");
 			progressDialog.setMessage("Working...");
