@@ -28,12 +28,10 @@ import at.fhhgb.auth.lib.util.UIUtils;
 import at.fhhgb.auth.provider.AuthDb.Feature;
 import at.fhhgb.auth.provider.AuthDb.Subject;
 import at.fhooe.mcm.smc.Constants;
-import at.fhooe.mcm.smc.math.matrix.Matrix;
 import at.fhooe.mcm.smc.math.mfcc.FeatureVector;
 import at.fhooe.mcm.smc.math.mfcc.MFCC;
 import at.fhooe.mcm.smc.math.vq.ClusterUtil;
 import at.fhooe.mcm.smc.math.vq.Codebook;
-import at.fhooe.mcm.smc.math.vq.KMeans;
 import at.fhooe.mcm.smc.wav.WavReader;
 import at.fhooe.mcm.smc.wav.WaveRecorder;
 
@@ -288,28 +286,6 @@ public class VoiceAuthenticatorActivity extends Activity implements OnClickListe
 			return pl;
 		}
 
-		private Codebook createCodebook(KMeans kmeans) {
-			int numberClusters = kmeans.getNumberClusters();
-			Matrix[] centers = new Matrix[numberClusters];
-			for (int i = 0; i < numberClusters; i++) {
-				centers[i] = kmeans.getCluster(i).getCenter();
-			}
-			Codebook cb = new Codebook();
-			cb.setLength(numberClusters);
-			cb.setCentroids(centers);
-			return cb;
-		}
-
-		private KMeans doClustering(FeatureVector pl) {
-			long start;
-			KMeans kmeans = new KMeans(Constants.CLUSTER_COUNT, pl, Constants.CLUSTER_MAX_ITERATIONS);
-			Log.i(TAG, "Prepared k means clustering");
-			start = System.currentTimeMillis();
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			kmeans.run();
-			Log.i(TAG, "Clustering finished, total time = " + (System.currentTimeMillis() - start) + "ms");
-			return kmeans;
-		}
 
 		private FeatureVector createFeatureVector(double[][] mfcc) {
 			int vectorSize = mfcc[0].length;
