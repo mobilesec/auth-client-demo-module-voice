@@ -126,6 +126,8 @@ public class VoiceAuthenticatorActivity extends Activity implements OnClickListe
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				Intent intent = new Intent(VoiceAuthenticatorActivity.this, CreateVoiceSample.class);
+				long userId = ContentUris.parseId(userUri);
+				intent.putExtra(Extras.EXTRA_USER_ID, userId);
 				startActivity(intent);
 				finish();
 			}
@@ -205,7 +207,7 @@ public class VoiceAuthenticatorActivity extends Activity implements OnClickListe
 		double minAverageDistortion = Double.MAX_VALUE;
 		if (allCodebooksCursor.moveToFirst()) {
 			do {
-				long currentUserId = allCodebooksCursor.getLong(allCodebooksCursor.getColumnIndexOrThrow(Feature._ID));
+				long currentUserId = allCodebooksCursor.getLong(allCodebooksCursor.getColumnIndexOrThrow(Feature.SUBJECT_ID));
 				Codebook codebook = getCodebookForUser(allCodebooksCursor);
 				double averageDistortion = ClusterUtil.calculateAverageDistortion(
 						userFeatureVector, codebook);

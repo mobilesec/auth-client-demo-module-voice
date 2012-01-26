@@ -26,7 +26,7 @@
             </intent-filter>
             
             <intent-filter>
-                <action android:name="at.fhhgb.auth.intent.DO_AUTH.voice"/>
+                <action android:name="at.fhhgb.auth.intent.DO_AUTH.voicerecognition"/>
             </intent-filter>
 
         </activity>
