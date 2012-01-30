@@ -37,6 +37,12 @@ import at.fhooe.mcm.smc.wav.WaveRecorder;
 
 import com.google.gson.Gson;
 
+/** 
+ * Verifies the entered password for the user with the saved one, or 
+ * redirects to the password creation activity if no password exists yet.
+ * @author thomaskaiser
+ *
+ */
 public class VoiceAuthenticatorActivity extends Activity implements OnClickListener {
 	private static final int RECORDING_DURATION = 2500;
 	private static final int UI_REFRESH_TIME = 250;

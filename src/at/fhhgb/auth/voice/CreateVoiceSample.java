@@ -45,7 +45,11 @@ import at.fhooe.mcm.smc.wav.WaveRecorder;
 
 import com.google.gson.Gson;
 
-
+/**
+ * Lets the user create a codebook (voice feature), if none exists yet. 
+ * @author thomaskaiser
+ *
+ */
 public class CreateVoiceSample extends Activity {
 	static final String TAG = "VoiceAuth";
 
@@ -64,10 +68,14 @@ public class CreateVoiceSample extends Activity {
 	private WaveRecorder waveRecorder;
 	private long lastRecordStartTime;
 	
+	/** The recording output file. */
 	private static File outputFile = 
 			new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC), 
 					"recording.wav");
+
+	public String codebookString;
 	
+	/** This is actually used to stop the record after the recording time is up as well. */
 	private Handler updateUiHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			int elapsed = (int) (System.currentTimeMillis() - lastRecordStartTime);
@@ -82,7 +90,6 @@ public class CreateVoiceSample extends Activity {
 		}
 	};
 
-	public String codebookString;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +195,11 @@ public class CreateVoiceSample extends Activity {
 		}
 	}
 	
+	/**
+	 * This is used to get from a filename of a .wav file to
+	 * MFCCS, to a cluster of MFCC, to String representation of a 
+	 * codebook. 
+	 */
 	class MfccTask extends AsyncTask<String, Object, String> {
 
 		private ProgressDialog progressDialog;

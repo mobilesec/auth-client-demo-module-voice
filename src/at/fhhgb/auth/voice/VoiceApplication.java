@@ -24,6 +24,8 @@ import android.util.Log;
 import at.fhhgb.auth.provider.AuthDb.Mode;
 
 /**
+ * This is basically just used to initialize the database on first startup and
+ * to provide the ID of the mode when it was inserted.
  * @author thomaskaiser
  *
  */
@@ -54,8 +56,8 @@ public class VoiceApplication extends Application {
 	}
 
 	private void createAuthMethod() {
-		Log.d(TAG, "Creating auth method with values: " + Defs.DEFAULT_CONTENT_VALUES.toString());
-		Uri insertedUri = getContentResolver().insert(Mode.CONTENT_URI, Defs.DEFAULT_CONTENT_VALUES);
+		Log.d(TAG, "Creating auth method with values: " + ContentValueDefaults.DEFAULT_CONTENT_VALUES.toString());
+		Uri insertedUri = getContentResolver().insert(Mode.CONTENT_URI, ContentValueDefaults.DEFAULT_CONTENT_VALUES);
 		long modeId = ContentUris.parseId(insertedUri);
 		Log.v(TAG, "Storing modeId in preferences: " + modeId);
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -68,7 +70,7 @@ public class VoiceApplication extends Application {
 		};
 		String selection = Mode.NAME + " = ?";
 		String[] selectionArgs = {
-				Defs.UNIQUE_NAME
+				ContentValueDefaults.UNIQUE_NAME
 		};
 		Cursor c = getContentResolver().query(Mode.CONTENT_URI, projection, selection, selectionArgs, null);
 		
@@ -77,7 +79,7 @@ public class VoiceApplication extends Application {
 		
 		String existingName = c.getString(c.getColumnIndexOrThrow(Mode.NAME));
 		
-		return Defs.UNIQUE_NAME.equals(existingName);
+		return ContentValueDefaults.UNIQUE_NAME.equals(existingName);
 	}
 
 }

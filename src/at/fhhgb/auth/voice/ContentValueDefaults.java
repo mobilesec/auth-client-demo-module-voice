@@ -18,11 +18,12 @@ import android.content.ContentValues;
 import at.fhhgb.auth.lib.intent.IntentIntegrator.AuthModes;
 import at.fhhgb.auth.provider.AuthDb.Mode;
 
-/**
+/** 
+ * Content value defaults for initializing database.
  * @author thomaskaiser
  *
  */
-public final class Defs {
+public final class ContentValueDefaults {
 
 	public static final String MODE_TYPE = AuthModes.VOICE_RECOGNITION;
 	public static final String UNIQUE_NAME = "at.fhhgb.auth.voice.VoiceAuthenticator";
